@@ -29,10 +29,8 @@ Let's dive in.
 
 - Part I: Set up Remote Desktop for Non-Administrative Users on Client-1
   - Step 1: Log into Client-1 
-  - Step 2: Open System Properties
-  - Step 3: Click "Remote Desktop"
-  - Step 4: Allow "Domain Users" Access to Remote Desktop
-  - Step 5: Test Logging into Client-1
+  - Step 2: Open "Remote Desktop"
+  - Step 3: Allow "Domain Users" Access to Remote Desktop
 - Part II: Create Additional Users and Attempt Logging into Client-1
   - Step 1: Log into DC-1 
   - Step 2: Open PowerShell ISE as an Administrator
@@ -46,68 +44,55 @@ Let's dive in.
 
 <h4>Step 1: Log into Client-1</h4>
 
-<img src="https://i.imgur.com/H3yOLKi.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/nTMpYVh.png" height="80%" width="80%" alt=""/>
 
 - Open Remote Desktop Connection on your local machine or Azure interface.
 - Enter the credentials for mydomain.com\jane_admin (e.g., username: jane_admin, password: [your password]).
 - Connect to Client-1.
 
-<h4>Step 2: Open System Properties</h4>
+<h4>Step 2: Open "Remote Desktop"</h4>
 
 <img src="https://i.imgur.com/dc07sEq.png" height="80%" width="80%" alt=""/>
 
 - Right-click on This PC or open Control Panel > System and Security > System.
 - Click Advanced system settings in the left-hand menu.
-
-<h4>Step 3: Click "Remote Desktop"</h4>
-
-<img src="https://i.imgur.com/xmHmeuy.png" height="80%" width="80%" alt=""/>
-
 - In the System Properties window, navigate to the Remote tab.
 - Check the option Allow Remote Connections to this Computer.
 
-<h4>Step 4: Allow "Domain Users" Access to Remote Desktop</h4>
+<h4>Step 3: Allow "Domain Users" Access to Remote Desktop</h4>
 
-<img src="https://i.imgur.com/xmHmeuy.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/HfQeAYK.png" height="80%" width="80%" alt=""/>
 
 - Click Select Users under the Remote Desktop section.
 - In the pop-up, click Add.
 - Type domain users, then click Check Names to verify.
 - Click OK to add the group and close all open windows.
 
-<h4>Step 5: Test Logging into Client-1</h4>
-
-<img src="https://i.imgur.com/xmHmeuy.png" height="80%" width="80%" alt=""/>
-
-- Disconnect from the session as jane_admin.
-- Reconnect using a non-administrative user account within the domain (e.g., mydomain.com\new_user).
-- Ensure you can access Client-1 successfully.
-
 <h3>Part II: Create Additional Users and Attempt Logging into Client-1</h3> 
 
 <h4>Step 1: Log into DC-1</h4>
 
-<img src="https://i.imgur.com/uIBtlR5.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/oMLwL25.png" height="80%" width="80%" alt=""/>
 
 Open Remote Desktop Connection and log into DC-1 using the credentials for jane_admin (e.g., username: jane_admin, password: [your password]).
 
 <h3>Step 2: Open PowerShell ISE as an Administrator</h3>
 
-<img src="https://i.imgur.com/woWbf1N.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/7Gftgic.png" height="80%" width="80%" alt=""/>
 
 - Search for PowerShell ISE in the Start Menu.
 - Right-click and choose Run as Administrator.
 
 <h3>Step 4: Create a New File and Paste the Script</h3>
 
-<img src="https://i.imgur.com/CowJbIQ.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/MIoTOk8.png" height="80%" width="80%" alt=""/>
 
-- Click Run Script or press F5 to execute the script.
+- Click Run Script or press F5 to execute the script. [(Here is the script)](https://github.com/joshmadakor1/AD_PS/blob/master/Generate-Names-Create-Users.ps1)
 - Monitor the output in the PowerShell Console to confirm that user accounts are being created without errors.
 
 <h3>Step 5: Verify Accounts in Active Directory Users and Computers (ADUC)</h3>
 
-<img src="https://i.imgur.com/HUEcGSt.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/8xBM1qM.png" height="80%" width="80%" alt=""/>
 
 - Open Active Directory Users and Computers (ADUC) on DC-1.
 - Navigate to the _EMPLOYEES Organizational Unit.
@@ -115,7 +100,7 @@ Open Remote Desktop Connection and log into DC-1 using the credentials for jane_
 
 <h3>Step 6: Attempt Logging into Client-1 with a New User</h3>
 
-<img src="https://i.imgur.com/4HdBb4U.png" height="80%" width="80%" alt=""/>
+<img src="https://i.imgur.com/qdSNO0B.png" height="80%" width="80%" alt=""/>
 
 - Note the default password set in the script for the new accounts.
 - Use Remote Desktop to log into Client-1 with one of the new user accounts (e.g., mydomain.com\user1).
