@@ -18,144 +18,106 @@ Let's dive in.
 
 - Microsoft Azure (Virtual Machines/Compute)
 - Remote Desktop
+- Active Directory
 
 <h2>Operating Systems Used</h2>
 
-- Windows Server 2022</b>
+- Windows Server 2022
+- Windows 10
 
-<h2>List of Steps</h2>
+<h2>Overview</h2>
 
-- Part I: Install Active Directory on DC-1
-  - Step 1: Install Active Directory Domain Services (AD DS)
-  - Step 2: Promote DC-1 to a Domain Controller
-  - Step 3: Log Back Into DC-1
-- Part II: Create a Domain Admin User
-  - Step 1: Open Active Directory Users and Computers (ADUC)
-  - Step 2: Create Organizational Units (OUs)
-  - Step 3: Create a New User (Jane Doe)
-  - Step 4: Add Jane Doe to the "Domain Admins" Group
-  - Step 5: Log In as Jane Admin
-- Part III: Join Client-1 to the Domain
-  - Step 1: Log Into Client-1
-  - Step 2: Join Client-1 to the Domain
-  - Step 3: Verify Client-1 in ADUC
-  - Step 4: Move Client-1 to the _CLIENTS OU
+- Part I: Set up Remote Desktop for Non-Administrative Users on Client-1
+  - Step 1: Log into Client-1 
+  - Step 2: Open System Properties
+  - Step 3: Click "Remote Desktop"
+  - Step 4: Allow "Domain Users" Access to Remote Desktop
+  - Step 5: Test Logging into Client-1
+- Part II: Create Additional Users and Attempt Logging into Client-1
+  - Step 1: Log into DC-1 
+  - Step 2: Open PowerShell ISE as an Administrator
+  - Step 3: Create a New File and Paste the Script
+  - Step 4: Run the Script and Observe the Accounts Being Created
+  - Step 5: Verify Accounts in Active Directory Users and Computers (ADUC)
+  - Step 6: Attempt Logging into Client-1 with a New User
 
 <h2>Installation Steps</h2>
-<h3>Part 1: Install Active Directory on DC-1</h3>
+<h3>Part I: Set up Remote Desktop for Non-Administrative Users on Client-1</h3>
 
-<h4>Step 1: Install Active Directory Domain Services (AD DS)</h4>
+<h4>Step 1: Log into Client-1</h4>
 
 <img src="https://i.imgur.com/H3yOLKi.png" height="80%" width="80%" alt=""/>
 
-- Log into DC-1 using the credentials:
-  - Username: labuser.
-  - Password: Cyberlab123!.
-- Open the Server Manager on DC-1.
-- Click on Add Roles and Features.
-- In the wizard:
-  - Select Role-based or feature-based installation.
-  - Choose the server (DC-1) from the server pool.
-  - Select Active Directory Domain Services and click Next.
-- Confirm the installation and click Install.
-- Wait for the installation to complete and do not restart yet.
+- Open Remote Desktop Connection on your local machine or Azure interface.
+- Enter the credentials for mydomain.com\jane_admin (e.g., username: jane_admin, password: [your password]).
+- Connect to Client-1.
 
-<h4>Step 2: Promote DC-1 to a Domain Controller</h4>
+<h4>Step 2: Open System Properties</h4>
 
 <img src="https://i.imgur.com/dc07sEq.png" height="80%" width="80%" alt=""/>
 
-- After the AD DS installation is complete, click on the Promote this server to a domain controller link in Server Manager.
-- In the Deployment Configuration window:
-  - Select Add a new forest.
-  - Enter your domain name (e.g., mydomain.com).
-  - Click Next through the options, setting up:
-  - Forest Functional Level: Windows Server 2016 or higher.
-  - Create a Directory Services Restore Mode (DSRM) password.
-- Click Install to promote the server.
-- After the installation, the server will restart automatically.
+- Right-click on This PC or open Control Panel > System and Security > System.
+- Click Advanced system settings in the left-hand menu.
 
-<h4>Step 3: Log Back Into DC-1</h4>
+<h4>Step 3: Click "Remote Desktop"</h4>
 
 <img src="https://i.imgur.com/xmHmeuy.png" height="80%" width="80%" alt=""/>
 
-- Once DC-1 restarts, log in as:
-  - Username: mydomain.com\labuser
-  - Password: Cyberlab123!
+- In the System Properties window, navigate to the Remote tab.
+- Check the option Allow Remote Connections to this Computer.
 
-<h3>Part II: Create a Domain Admin User</h3> 
+<h4>Step 4: Allow "Domain Users" Access to Remote Desktop</h4>
 
-<h4>Step 1: Open Active Directory Users and Computers (ADUC)</h4>
+<img src="https://i.imgur.com/xmHmeuy.png" height="80%" width="80%" alt=""/>
+
+- Click Select Users under the Remote Desktop section.
+- In the pop-up, click Add.
+- Type domain users, then click Check Names to verify.
+- Click OK to add the group and close all open windows.
+
+<h4>Step 5: Test Logging into Client-1</h4>
+
+<img src="https://i.imgur.com/xmHmeuy.png" height="80%" width="80%" alt=""/>
+
+- Disconnect from the session as jane_admin.
+- Reconnect using a non-administrative user account within the domain (e.g., mydomain.com\new_user).
+- Ensure you can access Client-1 successfully.
+
+<h3>Part II: Create Additional Users and Attempt Logging into Client-1</h3> 
+
+<h4>Step 1: Log into DC-1</h4>
 
 <img src="https://i.imgur.com/uIBtlR5.png" height="80%" width="80%" alt=""/>
 
-On DC-1, open Active Directory Users and Computers from the Start menu.
+Open Remote Desktop Connection and log into DC-1 using the credentials for jane_admin (e.g., username: jane_admin, password: [your password]).
 
-<h3>Step 2: Create Organizational Units (OUs)</h3>
+<h3>Step 2: Open PowerShell ISE as an Administrator</h3>
 
 <img src="https://i.imgur.com/woWbf1N.png" height="80%" width="80%" alt=""/>
 
-- Inside the _ADMINS OU:
-  - Right-click the OU and select New > User.
-  - Enter the following:
-    - First Name: Jane.
-    - Last Name: Doe.
-    - Username: jane_admin.
-- Set the password to Cyberlab123!.
-- Complete the wizard and create the user.
+- Search for PowerShell ISE in the Start Menu.
+- Right-click and choose Run as Administrator.
 
-<h3>Step 4: Add Jane Doe to the "Domain Admins" Group</h3>
+<h3>Step 4: Create a New File and Paste the Script</h3>
 
 <img src="https://i.imgur.com/CowJbIQ.png" height="80%" width="80%" alt=""/>
 
-- In ADUC, right-click on jane_admin and select Properties.
-- Go to the Member Of tab.
-- Click Add, search for Domain Admins, and add the user to the group.
-- Click OK to save.
+- Click Run Script or press F5 to execute the script.
+- Monitor the output in the PowerShell Console to confirm that user accounts are being created without errors.
 
-<h3>Step 5: Log In as Jane Admin</h3>
+<h3>Step 5: Verify Accounts in Active Directory Users and Computers (ADUC)</h3>
 
 <img src="https://i.imgur.com/HUEcGSt.png" height="80%" width="80%" alt=""/>
 
-- Log out of DC-1 and log back in using the credentials:
-  - Username: mydomain.com\jane_admin.
-  - Password: Cyberlab123!.
-- From now on, use jane_admin as your admin account.
+- Open Active Directory Users and Computers (ADUC) on DC-1.
+- Navigate to the _EMPLOYEES Organizational Unit.
+- Confirm that the new user accounts created by the script appear in this OU.
 
-<h3>Part III: Join Client-1 to the Domain</h3> 
-
-<h3>Step 1: Log Into Client-1</h3>
+<h3>Step 6: Attempt Logging into Client-1 with a New User</h3>
 
 <img src="https://i.imgur.com/4HdBb4U.png" height="80%" width="80%" alt=""/>
 
-- Log into Client-1 using the local admin credentials:
-  - Username: labuser.
-  - Password: Cyberlab123!.
+- Note the default password set in the script for the new accounts.
+- Use Remote Desktop to log into Client-1 with one of the new user accounts (e.g., mydomain.com\user1).
+- Ensure the login is successful.
 
-<h3>Step 2: Join Client-1 to the Domain</h3>
-
-<img src="https://i.imgur.com/b7GT7t4.png" height="80%" width="80%" alt=""/>
-
-- On Client-1, open Settings > System > About.
-- Click Join a domain under Device specifications.
-- Enter the domain name (e.g., mydomain.com) and click Next.
-- Provide the domain admin credentials:
-  - Username: mydomain.com\jane_admin.
-  - Password: Cyberlab123!.
-- Restart Client-1 when prompted.
-
-<h3>Step 3: Verify Client-1 in ADUC</h3>
-
-<img src="https://i.imgur.com/2Dal3Ka.png" height="80%" width="80%" alt=""/>
-
-- Log back into DC-1 as jane_admin.
-- Open Active Directory Users and Computers (ADUC).
-- Expand your domain and verify that Client-1 appears under the Computers container.
-
-<h3>Step 4: Move Client-1 to the _CLIENTS OU</h3>
-
-<img src="https://i.imgur.com/pDELfsE.png" height="80%" width="80%" alt=""/>
-
-- In ADUC, create a new OU named _CLIENTS:
-  - Right-click the domain name and select New > Organizational Unit.
-  - Name it _CLIENTS.
-- Drag and drop Client-1 from the Computers container into the _CLIENTS OU.
